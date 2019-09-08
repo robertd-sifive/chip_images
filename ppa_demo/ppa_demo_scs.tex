@@ -1,0 +1,243 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+
+\usepackage{amsmath}
+\usepackage{mathdots}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{tipa}
+\usefonttheme[onlymath]{serif}
+
+\definecolor{sifivered}{HTML}{FC3F4E}
+\definecolor{sifivered2}{HTML}{F86C66}
+\definecolor{sifivegrey}{HTML}{32393E}
+\definecolor{sifivegrey2}{HTML}{212629}
+\definecolor{sifiveyellow}{HTML}{FFCC00}
+
+\setbeamercolor{progress bar}{fg=sifivegrey}
+\setbeamercolor{title separator}{fg=sifivegrey}
+\setbeamercolor{progress bar in head/foot}{fg=sifivegrey}
+\setbeamercolor{progress bar in section page}{fg=sifivegrey}
+
+\title{Informing Physical Design in SCD}
+\subtitle{\textbf{Predicting parameter cost}}
+\author{Robert D'Angelo}
+%\institute{SiFive}
+\date{\today}
+
+%\usebackgroundtemplate%
+%{%
+    %\includegraphics[width=\paperwidth,height=\paperheight]{./figures/sifive_presentation_background_alpha.pdf}%
+%}
+
+\defbeamertemplate{frame numbering}{altcounter}{
+\vspace{-2.5mm}
+$|$\insertframenumber
+\hspace{7mm}
+}
+\setbeamertemplate{frame numbering}[altcounter]
+\setbeamercolor{frame numbering}{fg=white}
+
+\setbeamercolor{section in head/foot}{fg=white, bg=sifivegrey}
+
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{section in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor ~-- \beamer@ifempty{\insertshortinstitute}{}{SiFive}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{section in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+\input{./figures/beamer_cmds.tex}
+
+\begin{document}
+
+%\begin{frame}
+    %\titlepage{}
+%\end{frame}
+
+%\begin{frame}
+    %\frametitle{Overview}
+    %\tableofcontents{}
+
+    %\section{Analog computation}
+        %\subsection{Analog multipliers}
+        %\subsection{Time-mode arithmetic circuits}
+    %\subsection{Scalable analog circuits}
+        %\subsection{Time-mode circuis}
+        %\subsection{Bulk driven circuits}
+    %\section{Analog to information converters}
+        %\subsection{Compressed sensing ADCs}
+        %\subsection{Machine learning ADCs}
+    %\section{Biomedical signals}
+        %\subsection{ExG: EEG, ECG, EOG, etc.}
+%\end{frame}
+
+\bgroup
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  %
+  %
+  }%
+  \vskip0pt%
+}
+\makeatother
+
+\setbeamercolor{normal text}{fg=white}
+\setbeamercolor{frametitle}{fg=white}
+\usebeamercolor[fg]{normal text}
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./figures/sifive_presentation_title_page.pdf}}%
+
+\begin{frame}
+    \titlepage{}
+    %\centerline{\includegraphics[scale=0.5]{figures/source_mixing_cichocki2005.pdf}}
+\end{frame}
+}
+\egroup
+
+\setcounter{framenumber}{0}
+
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{frametitle}{fg=sifivered, bg=sifivegrey}
+%\usebeamercolor[fg]{normal text}
+%\begin{frame}
+    %\frametitle{Charge pump topologies}
+    %\begin{itemize}
+    %\item Dickinson
+        %\begin{itemize}
+        %\item on chip caps
+        %\item body effect issues
+        %\end{itemize}
+    %\end{itemize}
+    %%\centerline{\includegraphics[scale=0.5]{figures/source_mixing_cichocki2005.pdf}}
+%\end{frame}
+
+\imageonlyframe{./figures/1200px-PhysicalDesign.png} % figure
+               {What is physical design?}             % title
+               {} % caption
+
+\begin{frame}
+    \frametitle{How can SCD help?}
+    Real time feedback on “cost” of configuration choices.
+    \begin{itemize}
+        \item "Impact scores" per knob
+        \begin{itemize}
+            \item Area
+            \item Power
+            \item Timing
+            \item Compute cost (PNR/timing optimization), e.g. clock gating
+            \item I/O requirements
+            \item Benchmarks 
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Why show this information? Motivating example}
+    Yield/Cost vs. Area
+    %\vspace{2mm}
+    \centeredgraphictwo{figures/point_defects.png}{figures/yield_area_cost.png}
+    4x area reduction $\rightarrow$ 10x cost reduction
+    %\begin{align}
+       %V_{n} = \frac{C V_{cc}}{C + C_s} - V_{t}\left[V_{\scriptscriptstyle SB}^{n}\right]
+    %\end{align}
+
+    %\myfootnote{Pan, F., \& Samaddar, T. (2010). Charge pump circuit design. McGraw Hill Professional.}
+\end{frame}
+
+\imageonlyframe{./figures/gradient_descent.pdf} % figure
+               {Real time knob cost predictions in your browser?!?} % title
+               {} % caption
+
+\begin{frame}
+    \frametitle{Need a model}
+    Challenges to making front end prediction
+    \begin{itemize}
+        \item Compute time (Too many parameters)
+        \item Modeling (Complex designs)
+        \item Licensing (Expensive software, prohibitive use)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Need a model, Part 2}
+    Single input, single output neural network may not be enough. Ideally, create a model that can map data from different correlated data sources to qualitative performance metrics.
+    \begin{itemize}
+        \item Compute time $\rightarrow$ Sparse sampling + Pattern recognition/ML
+        \item Modeling $\rightarrow$ Statistical dependence over physical models
+        \item Licensing $\rightarrow$ Remote execution and FOSS
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Need data}
+    \begin{itemize}
+        \item Hardware measurements
+        \begin{itemize}
+            \item Best, ground truth, fast (speed of RL)
+            \item Expensive (\$10k-\$1M), Time consuming (months to years)
+            \item Error prone (humans make mistakes), outlier effects (small sample size)
+            \item Cutting edge prohibitively expensive ($>14nm$)
+        \end{itemize}
+    \end{itemize}
+    \centeredgraphicsmall{figures/sifive_chip.jpg}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Need data}
+    \begin{itemize}
+        \item ASIC Simulations (SPICE, PNR annotated gate sim, .lib delay models)
+        \begin{itemize}
+            \item Accurate, time consuming (hours to days to weeks)
+            \item Can do some statistics for free with stat params from PDK
+            \item Expensive (\$40k per license per year), time (days to weeks, 10 hrs with prometheus) 
+            \item Cutting edge ($<14nm$ simulations)
+        \end{itemize}
+    \end{itemize}
+        \centeredgraphicsmall{figures/td_wave.png}
+\end{frame}
+\begin{frame}
+    \frametitle{Need data}
+    \begin{itemize}
+        \item FPGA 
+        \begin{itemize}
+            \item Apples vs. oranges, relative information possible, still real hardware
+            \item Time consuming (minutes to hours)
+            \item Cheap (\$500-\$3k/board, ~\$300/license)
+            \item Limited to process on board (~14-32nm)
+        \end{itemize}
+    \end{itemize}
+    \centeredgraphicsmall{figures/fpga_vs_asic.png}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Need data, Part 2}
+    \begin{itemize}
+        \item Scoreboard great for integration testing, but not suitable for data collection
+        \item Mini-scoreboard $+$ Deputy $+$ Wake $=$ Data
+        \item xarrays \url{https://github.com/pydata/xarray}, N-D extension of pandas
+        \item database vs netCDF \url{https://www.unidata.ucar.edu/blogs/developer/entry/netcdf_schema_language}
+        \item Tensorflow(.js) to deploy trained models for front end design feedback
+    \end{itemize}
+
+    Typical gamma workload (lots of idle compute to be exploited):
+    \centeredgraphic{figures/gamma_workload.png}
+\end{frame}
+
+\end{document}

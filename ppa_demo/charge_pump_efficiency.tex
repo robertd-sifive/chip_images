@@ -1,0 +1,273 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{metropolis}
+
+\usepackage{amsmath}
+\usepackage{mathdots}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{tipa}
+\usefonttheme[onlymath]{serif}
+
+\definecolor{qorvoblue}{HTML}{009EE1}
+\definecolor{qorvoblue2}{HTML}{0076A9}
+\definecolor{qorvogrey}{HTML}{262626}
+
+\setbeamercolor{progress bar}{fg=qorvogrey}
+\setbeamercolor{title separator}{fg=qorvogrey}
+\setbeamercolor{progress bar in head/foot}{fg=qorvogrey}
+\setbeamercolor{progress bar in section page}{fg=qorvogrey}
+
+\title{AD2004C GaN PA Controller IC}
+\subtitle{\textbf{Charge pump design}\\
+\textcolor[HTML]{009EE1}{\textbf{Doc \# = NA}}\\
+\textcolor[HTML]{009EE1}{\textbf{REV = 0}}}
+\author{Robert D'Angelo}
+%\institute{Qorvo}
+\date{\today}
+
+\usebackgroundtemplate%
+{%
+    \includegraphics[width=\paperwidth,height=\paperheight]{./figures/qorvo_presentation_background_alpha.pdf}%
+}
+
+\defbeamertemplate{frame numbering}{altcounter}{
+\vspace{-2.5mm}
+$|$\insertframenumber
+\hspace{7mm}
+}
+\setbeamertemplate{frame numbering}[altcounter]
+\setbeamercolor{frame numbering}{fg=white}
+
+\input{./figures/beamer_cmds.tex}
+
+\begin{document}
+
+%\begin{frame}
+    %\titlepage{}
+%\end{frame}
+
+%\begin{frame}
+    %\frametitle{Overview}
+    %\tableofcontents{}
+
+    %\section{Analog computation}
+        %\subsection{Analog multipliers}
+        %\subsection{Time-mode arithmetic circuits}
+    %\subsection{Scalable analog circuits}
+        %\subsection{Time-mode circuis}
+        %\subsection{Bulk driven circuits}
+    %\section{Analog to information converters}
+        %\subsection{Compressed sensing ADCs}
+        %\subsection{Machine learning ADCs}
+    %\section{Biomedical signals}
+        %\subsection{ExG: EEG, ECG, EOG, etc.}
+%\end{frame}
+
+\bgroup
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  %
+  %
+  }%
+  \vskip0pt%
+}
+\makeatother
+
+\setbeamercolor{normal text}{fg=white}
+\setbeamercolor{frametitle}{fg=white}
+\usebeamercolor[fg]{normal text}
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./figures/qorvo_presentation_title_page.pdf}}%
+
+\begin{frame}
+    \titlepage{}
+    %\centerline{\includegraphics[scale=0.5]{figures/source_mixing_cichocki2005.pdf}}
+\end{frame}
+}
+\egroup
+
+\setcounter{framenumber}{0}
+
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{frametitle}{fg=qorvoblue2, bg=qorvogrey}
+%\usebeamercolor[fg]{normal text}
+%\begin{frame}
+    %\frametitle{Charge pump topologies}
+    %\begin{itemize}
+    %\item Dickinson
+        %\begin{itemize}
+        %\item on chip caps
+        %\item body effect issues
+        %\end{itemize}
+    %\end{itemize}
+    %%\centerline{\includegraphics[scale=0.5]{figures/source_mixing_cichocki2005.pdf}}
+%\end{frame}
+
+
+\imageonlyframe{./figures/gan_pa.pdf} % figure
+               {GaN PA System}             % title
+               {} % caption
+
+\begin{frame}
+    \frametitle{Charge pump system}
+    %\vspace{2mm}
+    \centeredgraphictwovert{figures/charge_pump_overview.pdf}{figures/charge_pump_timing.png}
+    %\begin{align}
+       %V_{n} = \frac{C V_{cc}}{C + C_s} - V_{t}\left[V_{\scriptscriptstyle SB}^{n}\right]
+    %\end{align}
+
+    %\myfootnote{Pan, F., \& Samaddar, T. (2010). Charge pump circuit design. McGraw Hill Professional.}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Charge pump ripple}
+    \centeredgraphic{figures/cp_ripple.pdf}{}{}
+    \vspace{-1cm}
+    \begin{align}
+        \Delta V_{pp} = \frac{I_{out}}{k_{fb} C_{load} f_{osc}} \\
+        k_{fb} \approx 10
+    \end{align}
+
+    %\myfootnote{Pan, F., \& Samaddar, T. (2010). Charge pump circuit design. McGraw Hill Professional.}
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Dickinson vs. Cascaded Doubler (i.e. $2^N$)}
+    %\vspace{2mm}
+    \centeredgraphic{figures/bootstrapped_cp_stage.pdf}
+    %\begin{align}
+       %V_{n} = \frac{C V_{cc}}{C + C_s} - V_{t}\left[V_{\scriptscriptstyle SB}^{n}\right]
+    %\end{align}
+
+    %\myfootnote{Pan, F., \& Samaddar, T. (2010). Charge pump circuit design. McGraw Hill Professional.}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Dickinson vs. Cascaded Doubler (i.e. $2^N$)}
+    %\vspace{2mm}
+    \centeredgraphic{figures/charge_pump_doubler_switches.pdf}
+    %\begin{align}
+       %V_{n} = \frac{C V_{cc}}{C + C_s} - V_{t}\left[V_{\scriptscriptstyle SB}^{n}\right]
+    %\end{align}
+
+    %\myfootnote{Pan, F., \& Samaddar, T. (2010). Charge pump circuit design. McGraw Hill Professional.}
+\end{frame}
+
+
+
+\begin{frame}{Pros and Cons}
+\begin{columns}[t]
+    \begin{column}{0.5\linewidth}
+        \textbf{Dickinson} \\
+        \begin{column}{0.5\linewidth}
+            Pros:
+            \begin{itemize}
+                \item Half the parasitics
+                \item Can use extra external cap footprints for larger load cap
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\linewidth}
+            Cons:
+            \begin{itemize}
+                \item Saturation $\rightarrow$ $\uparrow$ $\frac{V_{loss}}{stage}$
+                \item Parasitics have larger effect in saturation ($2/3 C_{ox}WL$)
+                \item Bias bulks, bootstrap the gates for oxide reliability
+            \end{itemize}
+        \end{column}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+        \textbf{Doubler} \\
+        \begin{column}{0.5\linewidth}
+            Pros:
+            \begin{itemize}
+                \item Oxide stress met by architecture, no special bulk biasing needed
+                \item Parasitics have smaller effect in triode ($1/2 C_{ox}WL$)
+                \item $f_{ripple}$ effectively halved
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\linewidth}
+            Cons:
+            \begin{itemize}
+                \item Double the parasitics
+                \item Need double the footprints for external capacitors
+            \end{itemize}
+        \end{column}
+    \end{column}
+\end{columns}    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Charge pump design}
+        \begin{itemize}
+            \item $N_{\scriptscriptstyle stages} = \frac{V_{\scriptscriptstyle out} - V_{\scriptscriptstyle th}}{V_{\scriptscriptstyle clk} - V_{\scriptscriptstyle th}}$
+            \item Spectre $\rightarrow$ $\mu_{p}$, $\gamma_{p}$ (body effect factor), $C_{ox}$, $V_{th}$
+            \item Voltage, Temp rating, $\rightarrow$ $C_{\scriptscriptstyle ext} = 220nF$
+            \item $f_{pump_{max}} = 50MHz$
+            \item $T_{reco} = 1\mu \rightarrow f_{pump_{min}} \approx 1.5MHz$
+            \item $L = 700nm$ minimum length to minimize parasitic cap
+            \item $I_{out}, \Delta V \rightarrow W = 50\mu \times 16 \times 8$
+            \item $\Delta V < \frac{V_{gate_{fs}}}{2 ^ {ENOB}}$, $ENOB > 9$
+            \item Regulation options: discrete clock driver switching, VCO feedback, PWM feedback
+        \end{itemize}
+    %\centerline{\includegraphics[scale=0.5]{figures/source_mixing_cichocki2005.pdf}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Stage driver parasitics}
+        \begin{itemize}
+            \item $\frac{C_{par_{drv}}}{C_{boost}} = \frac{V_{out} f_{max} L^2}{\mu_{p} N_{stages} (V_{dd} ^ 2 - V_{dd} V_{th} - \frac{V_{dd}}{2})}$
+            \item $C_{par_{int}}$ more complex
+            \item Guess: $C_{par_{int}} \approx 0.1$ for Dickinson
+            \item $0.15$ for Doubler
+        \end{itemize}
+    %\centerline{\includegraphics[scale=0.5]{figures/source_mixing_cichocki2005.pdf}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Ripple estimation}
+        \begin{itemize}
+            \item $C_{prl} = C_{boost} || C_{load}$
+            \item $R_{sw} = \frac{(V_{clk} - V_{th}) L}{\mu_{p} C_{ox} W}$
+            \item $\Delta V = \frac{I_{out}}{f_{osc}(C_{load} + C_{boost})} - \frac{R_{sw} I_{out} C_{load} C_{boost}}{(C_{load} + C_{boost})^2} \left(1 + ln(\frac{1}{f_{osc} R_{sw} C_{prl}})\right)$
+        \end{itemize}
+    %\centerline{\includegraphics[scale=0.5]{figures/source_mixing_cichocki2005.pdf}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Efficiency estimation}
+    \begin{align}
+        \eta = \frac{V_{out} I_{out}}{V_{out}I_{out} + \frac{N_{stages} I_{out}^2}{f_{pump} C_{boost}} + (C_{par_{int}} + C_{par_{drv}}) N_{stages} f_{pump} C_{boost} V_{clk}^2}\nonumber
+    \end{align}
+    %\centerline{\includegraphics[scale=0.5]{figures/source_mixing_cichocki2005.pdf}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{$\eta$ and $\Delta V$ vs. $I_{out}$ and $f_{pump}$}
+    %\vspace{2mm}
+    \centeredgraphic{./figures/charge_pump_efficiency_comparison.pdf}
+    %\begin{align}
+       %V_{n} = \frac{C V_{cc}}{C + C_s} - V_{t}\left[V_{\scriptscriptstyle SB}^{n}\right]
+    %\end{align}
+
+    %\myfootnote{Pan, F., \& Samaddar, T. (2010). Charge pump circuit design. McGraw Hill Professional.}
+\end{frame}
+
+\begin{frame}
+    \frametitle{$\eta$ and $\Delta V$ vs. $I_{out}$ and $C_{boost}$}
+    %\vspace{2mm}
+    \centeredgraphic{./figures/charge_pump_efficiency_comparison_cap.pdf}
+    %\begin{align}
+       %V_{n} = \frac{C V_{cc}}{C + C_s} - V_{t}\left[V_{\scriptscriptstyle SB}^{n}\right]
+    %\end{align}
+
+    %\myfootnote{Pan, F., \& Samaddar, T. (2010). Charge pump circuit design. McGraw Hill Professional.}
+\end{frame}
+
+
+\end{document}

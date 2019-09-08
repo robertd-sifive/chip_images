@@ -1,0 +1,220 @@
+\newcommand\myfootnote[1]{%
+  \tikz[remember picture,overlay]
+  \draw (current page.south west) +(1in + \oddsidemargin,2em)
+  node[anchor=south west,inner sep=0pt]{\parbox{\textwidth}{%
+      \rlap{\rule{10em}{0.4pt}}\raggedright\tiny#1}};
+}
+
+
+% for schematics graphics
+\newcommand{\trimmedgraphic}[1]{%
+    %\centering
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphics[trim = 5cm 3cm 3cm 8.5cm,clip,width=0.9\linewidth]{#1}
+                }
+    }
+}
+
+\newcommand{\trimmedgraphicconv}[2]{
+    \begin{figure}
+        \centering
+        \includegraphics[trim = 2cm 0cm 2cm 0cm,clip,width=0.33\linewidth]{#1}
+        \caption*{#2}
+    \end{figure}
+}
+
+% place graphic in the center with max size on the slide
+\newcommand{\centeredgraphic}[1]{
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphics[width=\linewidth,height=0.8\textheight, keepaspectratio]{#1}
+                }
+    }
+}
+
+% place graphic in the center with max size on the slide
+\newcommand{\centeredgraphicsmall}[1]{
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphics[height=0.5\textheight, keepaspectratio]{#1}
+                }
+    }
+}
+
+
+\newcommand{\centeredgraphictwo}[2]{
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphics[width=0.5\linewidth,height=0.8\textheight, keepaspectratio]{#1}
+                    \includegraphics[width=0.5\linewidth,height=0.8\textheight, keepaspectratio]{#2}
+                }
+    }
+}
+\newcommand{\centeredgraphictwovert}[2]{
+    \centerline{
+        \makebox[\textwidth]{
+                \begin{tabular}{c}
+                    \includegraphics[height=0.4\textheight, keepaspectratio]{#1} \\
+                    \includegraphics[height=0.4\textheight, keepaspectratio]{#2}
+                \end{tabular}
+                }
+    }
+}
+
+
+
+% place graphic in the center with max size on the slide with transparency
+\newcommand{\centeredgraphictransparent}[1]{
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphicstransparent[width=\linewidth,height=0.8\textheight, keepaspectratio]{#1}{15}
+                }
+    }
+}
+
+\newcommand{\centeredgraphicwidthtransparent}[2]{
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphicstransparent[width=#2\linewidth,height=0.8\textheight, keepaspectratio]{#1}{15}
+                }
+    }
+}
+
+% place graphic in the center with given width
+\newcommand{\centeredgraphicwidth}[2]{
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphics[width=#2\linewidth,height=0.8\textheight, keepaspectratio]{#1}
+                }
+    }
+}
+
+% place graphic in the center with height and width specified, but aspect ratio maintained
+\newcommand{\centeredgraphicaspect}[3]{
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphics[width=#2\linewidth,height=#3\textheight, keepaspectratio]{#1}
+                }
+    }
+}
+
+\newcommand{\centeredgraphicaspectfootnote}[4]{
+    \centerline{
+        \makebox[\textwidth]{
+                    \includegraphics[width=#2\linewidth,height=#3\textheight, keepaspectratio]{#1}
+                }
+    }
+    \myfootnote{#4}
+}
+
+% place a frame that is just an image and a title
+\newcommand{\imageonlyframetwo}[4]{% image, image, title, width
+\begin{frame}
+    \frametitle{#3}
+    \pause
+    \begin{overprint}
+    \onslide<1>\centeredgraphicwidth{#1}{#4}
+    \onslide<2>\centeredgraphicwidthtransparent{#1}{#4}
+    \end{overprint}
+
+    \begin{overprint}
+    \onslide<1>\centeredgraphicwidthtransparent{#2}{#4}
+    \onslide<2>\centeredgraphicwidth{#2}{#4}
+    \end{overprint}
+\end{frame}
+}
+
+% place a frame that is just an image and a title
+\newcommand{\imageonlyframe}[3]{% image, title, caption
+\begin{frame}
+    \frametitle{#2}
+    #3
+    \visible<1>{\centeredgraphic{#1}}
+\end{frame}
+}
+
+\newcommand{\imageonlyframenonum}[3]{% image, title, caption
+\begin{frame}[noframenumbering]
+    \frametitle{#2}
+    #3
+    \visible<1>{\centeredgraphic{#1}}
+\end{frame}
+}
+
+
+
+\newcommand{\imageonlyframetest}[4]{% image, title, caption
+\begin{frame}
+    \frametitle{#3 \includegraphics[width=0.05\linewidth, keepaspectratio]{#2}}
+    #4
+    \visible<1>{\centeredgraphic{#1}}
+\end{frame}
+}
+
+
+% place a frame that is just an image and a title
+\newcommand{\imageonlyframenopause}[3]{% image, title, caption
+\begin{frame}
+    \frametitle{#2}
+    #3
+    \centeredgraphic{#1}
+\end{frame}
+}
+
+
+%\newcommand\blfootnote[1]{%
+  %\begingroup
+  %\renewcommand\thefootnote{}\footnote{#1}%
+  %\addtocounter{footnote}{-1}%
+  %\endgroup
+%}
+
+%\newcommand{\myfootnote}[1]{
+    %\setbeamerfont{footnote}{size=\tiny}
+    %\blfootnote{#1}
+%}
+
+% place a frame that is just an image and a title and a footnote
+\newcommand{\imageonlyframefootnote}[4]{% image, title, footnote, caption
+\begin{frame}
+    \frametitle{#2}
+    #4
+    \vspace{-0.5cm}
+    \centeredgraphic{#1}
+    \myfootnote{#3}
+\end{frame}
+}
+
+\newcommand{\imageonlyframefootnotenoskip}[4]{% image, title, footnote, caption
+\begin{frame}
+    \frametitle{#2}
+    #4
+    \centeredgraphic{#1}
+    \myfootnote{#3}
+\end{frame}
+}
+
+\newcommand{\imageonlyframefootnotenoskipnonum}[4]{% image, title, footnote, caption
+\begin{frame}[noframenumbering]
+    \frametitle{#2}
+    #4
+    \centeredgraphic{#1}
+    \myfootnote{#3}
+\end{frame}
+}
+
+
+
+\newcommand{\imageonlyframefootnoteaspect}[6]{% image, title, footnote, caption, width, height
+\begin{frame}
+    \frametitle{#2}
+    #4
+    \centeredgraphicaspect{#1}{#5}{#6}
+    \myfootnote{#3}
+\end{frame}
+}
+
+
+
+
